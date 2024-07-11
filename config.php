@@ -2,6 +2,7 @@
 
 
 require_once('users.php');
+require_once('post.php');
 
 
 class bdd
@@ -45,5 +46,16 @@ class bdd
             }
         }
     }
-
+    public function addPost(post $post)
+    {
+        $contenu=$post->getContenu();
+        $titre=$post->getTitre();
+        $auteur=$post->getAuteur();
+        $requete = 'INSERT INTO posts (titre,contenu,auteur) VALUES(:titre, :contenu, :auteur)';
+        $requetexe = $this->bdd->prepare($requete);
+        $requetexe->bindParam(":titre",$titre);
+        $requetexe->bindParam(":contenu",$contenu);
+        $requetexe->bindParam(":auteur",$auteur);
+        $requetexe->execute();
+    }
 }

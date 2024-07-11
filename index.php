@@ -5,6 +5,17 @@ session_start();
 $bdd = new bdd();
 $bdd->connect();
 
+if (isset($_POST['ajouter'])) {
+
+    $titre = ($_POST['titre']);
+    $contenu = ($_POST['contenu']);
+    $auteur = ($_POST['auteur']);
+    $newpost = new post();
+    $newpost->setTitre($titre);
+    $newpost->setContenu($contenu);
+    $newpost->setAuteur($auteur);
+    $bdd->addPost($newpost);
+}
 
 /* inscription */
 if (isset($_POST['inscription'])) {
@@ -55,6 +66,15 @@ $articles = new posts();
             </ul>
         </nav>
     </header>
+
+    <form action="" method="post">
+        <input type="text" name="titre">
+        <input type="text" name="contenu">
+        <input type="text" name="auteur">
+        <button type="submit" name="ajouter">Ajouter</button> 
+    </form>
+
+
     <div class="form">
         <form action="" method="post">
             <input type="text" name="username" placeholder="identifiant">
@@ -69,23 +89,29 @@ $articles = new posts();
             <input type="submit" name="connexion" value="connexion">
         </form>
         <hr style="margin: 5% 5% 5% 5%;">
-            <table border ="1">
-                <thead>
-                    <th>titre</th>
-                    <th>contenu</th>
-                    <th>auteur</th>
-                </thead>
-                <tbody>
-                    <?php foreach ($articles->getAll() as $article) { ?>
-                        <tr>
-                            <td><?php echo $article['titre']; ?></td>
-                            <td><?php echo $article['contenu']; ?></td>
-                            <td><?php echo $article['auteur']; ?></td>
-                            <?php if(isset($_SESSION['user']))   ?>
-                        </tr>
-                    <?php  } ?>
-                </tbody>
-            </table>
+        <table border="1">
+            <thead>
+                <th>titre</th>
+                <th>contenu</th>
+                <th>auteur</th>
+                <th>Action</th>
+            </thead>
+            <tbody>
+                <?php foreach ($articles->getAll() as $article) { ?>
+                    <tr>
+                        <td><?php echo $article['titre']; ?></td>
+                        <td><?php echo $article['contenu']; ?></td>
+                        <td><?php echo $article['auteur']; ?></td>
+                        <?php if (isset($_SESSION['user']))   ?>
+                        <td>
+                            <form action="" method="post">
+                                <button type="submit" name="edit"> edit</button>
+                            </form>
+                        </td>
+                    </tr>
+                <?php  } ?>
+            </tbody>
+        </table>
     </div>
 </body>
 
