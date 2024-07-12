@@ -1,8 +1,8 @@
 <?php
 
 
-require_once('users.php');
-require_once('post.php');
+include('users.php');
+include('post.php');
 
 
 class bdd
@@ -50,12 +50,19 @@ class bdd
     {
         $contenu=$post->getContenu();
         $titre=$post->getTitre();
-        $auteur=$post->getAuteur();
+        $autheur=$post->getAuteur();
         $requete = 'INSERT INTO posts (titre,contenu,auteur) VALUES(:titre, :contenu, :auteur)';
         $requetexe = $this->bdd->prepare($requete);
         $requetexe->bindParam(":titre",$titre);
         $requetexe->bindParam(":contenu",$contenu);
-        $requetexe->bindParam(":auteur",$auteur);
+        $requetexe->bindParam(":auteur",$autheur);
         $requetexe->execute();
+    }
+    public function getAllpost()
+    {
+        $sql = "SELECT * FROM posts";
+        $result = $this->bdd->query($sql);
+
+        return $result->fetchAll(PDO::FETCH_ASSOC);
     }
 }

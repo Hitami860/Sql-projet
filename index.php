@@ -1,6 +1,6 @@
 <?php
 require_once('config.php');
-require_once('posts.php');
+
 session_start();
 $bdd = new bdd();
 $bdd->connect();
@@ -9,11 +9,9 @@ if (isset($_POST['ajouter'])) {
 
     $titre = ($_POST['titre']);
     $contenu = ($_POST['contenu']);
-    $auteur = ($_POST['auteur']);
     $newpost = new post();
     $newpost->setTitre($titre);
     $newpost->setContenu($contenu);
-    $newpost->setAuteur($auteur);
     $bdd->addPost($newpost);
 }
 
@@ -40,8 +38,6 @@ if (isset($_POST["connexion"])) {
     }
 }
 
-$articles = new posts();
-
 ?>
 
 
@@ -56,7 +52,7 @@ $articles = new posts();
     <title>Inscription connexion</title>
 </head>
 
-<body>
+<body class="bg-blue-600 text-white">
     <header>
         <nav class="pb-[15%]">
             <ul>
@@ -68,9 +64,8 @@ $articles = new posts();
     </header>
 
     <form action="" method="post">
-        <input type="text" name="titre">
-        <input type="text" name="contenu">
-        <input type="text" name="auteur">
+        <input type="text" name="titre" placeholder="titre du post">
+        <input type="text" name="contenu" placeholder="post">
         <button type="submit" name="ajouter">Ajouter</button> 
     </form>
 
@@ -97,7 +92,7 @@ $articles = new posts();
                 <th>Action</th>
             </thead>
             <tbody>
-                <?php foreach ($articles->getAll() as $article) { ?>
+                <?php foreach ($bdd->getAllpost() as $article) { ?>
                     <tr>
                         <td><?php echo $article['titre']; ?></td>
                         <td><?php echo $article['contenu']; ?></td>
